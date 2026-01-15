@@ -37,7 +37,8 @@ Replace `/path/to/` with the absolute path where you cloned this repository.
 
 Restart the Claude Desktop app and then ask the status of a TfL line. You should get something like this...
 
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/c3c60ad3-2178-4fdd-b4df-0f1bb65427a0" />
+<img width="700" alt="A screenshot of a Claude response using the MCP server" src="https://github.com/user-attachments/assets/a2972c61-8d17-43cf-9457-39424c9bc60a" />
+
 
 
 ## Tools
