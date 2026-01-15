@@ -4,7 +4,6 @@ from typing import Optional
 import httpx
 from fastmcp import FastMCP
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
@@ -13,10 +12,10 @@ logger = logging.getLogger(__name__)
 
 TFL_API_BASE = "https://api.tfl.gov.uk"
 USER_AGENT = "tfl-mcp-server/1.0"
-REQUEST_TIMEOUT = 10.0  # seconds
+REQUEST_TIMEOUT = 10.0
 
 # Initialize FastMCP server
-mcp = FastMCP("TfL Line Status MCP Server")
+mcp = FastMCP("TfL Line Status MCP")
 
 # Reusable HTTP client with timeout
 http_client: Optional[httpx.AsyncClient] = None
