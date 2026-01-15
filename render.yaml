@@ -6,6 +6,3 @@ services:
     startCommand: python src/server.py
     plan: free
     autoDeploy: false
-    envVars:
-      - key: ENVIRONMENT
-        value: production

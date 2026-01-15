@@ -1,29 +1,55 @@
 import os
+import logging
 from typing import Optional
 import httpx
 from fastmcp import FastMCP
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 TFL_API_BASE = "https://api.tfl.gov.uk"
 USER_AGENT = "tfl-mcp-server/1.0"
+REQUEST_TIMEOUT = 10.0
 
 # Initialize FastMCP server
-mcp = FastMCP("TfL Line Status MCP Server")
+mcp = FastMCP("TfL Line Status MCP")
+
+# Reusable HTTP client with timeout
+http_client: Optional[httpx.AsyncClient] = None
+
+
+def get_http_client() -> httpx.AsyncClient:
+    """Get or create the shared HTTP client."""
+    global http_client
+    if http_client is None:
+        http_client = httpx.AsyncClient(
+            timeout=REQUEST_TIMEOUT,
+            headers={
+                "User-Agent": USER_AGENT,
+                "Accept": "application/json",
+            }
+        )
+    return http_client
 
 
 async def make_tfl_request(endpoint: str) -> Optional[list]:
     """Make a request to the TfL API."""
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Accept": "application/json",
-    }
-
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{TFL_API_BASE}{endpoint}", headers=headers)
-            response.raise_for_status()
-            return response.json()
+        client = get_http_client()
+        response = await client.get(f"{TFL_API_BASE}{endpoint}")
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPStatusError as error:
+        logger.error(f"HTTP error {error.response.status_code}: {error}")
+        return None
+    except httpx.TimeoutException:
+        logger.error(f"Request timeout for {endpoint}")
+        return None
     except Exception as error:
-        print(f"Error making request: {error}")
+        logger.error(f"Request failed: {error}")
         return None
 
 
@@ -97,9 +123,9 @@ async def get_mode_disruptions(modes: str) -> str:
 if __name__ == "__main__":
     # Use stdio transport for Claude Desktop, HTTP for remote deployment
     if os.environ.get("PORT"):
-        # HTTP transport for remote deployment (Render, etc.)
         port = int(os.environ.get("PORT", 8000))
+        logger.info(f"Starting server on port {port}")
         mcp.run(transport="http", host="0.0.0.0", port=port)
     else:
-        # stdio transport for Claude Desktop
+        logger.info("Starting server with stdio transport")
         mcp.run(transport="stdio")
