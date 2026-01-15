@@ -11,7 +11,7 @@ python src/server.py
 
 ## Deployment
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/reeceatkinson/TfL-line-status-mcp-DRAFT)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/reeceatkinson/TfL-line-status-mcp)
 
 Click the button above to deploy your own instance to Render. Your server will be available at `https://your-service-name.onrender.com/mcp`
 
@@ -25,7 +25,7 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
   "mcpServers": {
     "tfl-line-status": {
       "command": "python3",
-      "args": ["/path/to/TfL-line-status-mcp-DRAFT/src/server.py"]
+      "args": ["/path/to/TfL-line-status-mcp/src/server.py"]
     }
   }
 }
@@ -37,7 +37,8 @@ Replace `/path/to/` with the absolute path where you cloned this repository.
 
 Restart the Claude Desktop app and then ask the status of a TfL line. You should get something like this...
 
-<img width="1772" height="1378" alt="CleanShot 2025-12-29 at 1  32 06@2x" src="https://github.com/user-attachments/assets/304155e4-55be-4359-8081-21d1fae15a5a" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/c3c60ad3-2178-4fdd-b4df-0f1bb65427a0" />
+
 
 ## Tools
 
